@@ -28,8 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RenameFile));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.txtCopyPath = new System.Windows.Forms.Button();
+            this.btnCopyPath = new System.Windows.Forms.Button();
             this.btnSelectPath = new System.Windows.Forms.Button();
             this.txtPathFolder = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -43,6 +44,7 @@
             this.btnSelectAll = new System.Windows.Forms.Button();
             this.lblCredits = new System.Windows.Forms.Label();
             this.lblDragMessage = new System.Windows.Forms.Label();
+            this.btnUndoChanges = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -51,7 +53,7 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.txtCopyPath);
+            this.groupBox1.Controls.Add(this.btnCopyPath);
             this.groupBox1.Controls.Add(this.btnSelectPath);
             this.groupBox1.Controls.Add(this.txtPathFolder);
             this.groupBox1.Location = new System.Drawing.Point(12, 15);
@@ -61,14 +63,15 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = " Seleccione la Carpeta / Pegar Ruta";
             // 
-            // txtCopyPath
+            // btnCopyPath
             // 
-            this.txtCopyPath.Location = new System.Drawing.Point(328, 16);
-            this.txtCopyPath.Name = "txtCopyPath";
-            this.txtCopyPath.Size = new System.Drawing.Size(75, 23);
-            this.txtCopyPath.TabIndex = 2;
-            this.txtCopyPath.Text = "Pegar Ruta";
-            this.txtCopyPath.UseVisualStyleBackColor = true;
+            this.btnCopyPath.Location = new System.Drawing.Point(328, 16);
+            this.btnCopyPath.Name = "btnCopyPath";
+            this.btnCopyPath.Size = new System.Drawing.Size(75, 23);
+            this.btnCopyPath.TabIndex = 2;
+            this.btnCopyPath.Text = "Pegar Ruta";
+            this.btnCopyPath.UseVisualStyleBackColor = true;
+            this.btnCopyPath.Click += new System.EventHandler(this.txtCopyPath_Click);
             // 
             // btnSelectPath
             // 
@@ -108,6 +111,7 @@
             this.btnRename.TabIndex = 2;
             this.btnRename.Text = "Renombrar";
             this.btnRename.UseVisualStyleBackColor = true;
+            this.btnRename.Click += new System.EventHandler(this.btnRename_Click);
             // 
             // txtSerieName
             // 
@@ -195,13 +199,25 @@
             // lblDragMessage
             // 
             this.lblDragMessage.AutoSize = true;
+            this.lblDragMessage.BackColor = System.Drawing.SystemColors.Window;
             this.lblDragMessage.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblDragMessage.ForeColor = System.Drawing.SystemColors.ButtonShadow;
-            this.lblDragMessage.Location = new System.Drawing.Point(84, 142);
+            this.lblDragMessage.Location = new System.Drawing.Point(72, 144);
             this.lblDragMessage.Name = "lblDragMessage";
             this.lblDragMessage.Size = new System.Drawing.Size(250, 20);
             this.lblDragMessage.TabIndex = 1;
             this.lblDragMessage.Text = "Arrastra la carpeta de tus archivos";
+            // 
+            // btnUndoChanges
+            // 
+            this.btnUndoChanges.Enabled = false;
+            this.btnUndoChanges.Location = new System.Drawing.Point(704, 76);
+            this.btnUndoChanges.Name = "btnUndoChanges";
+            this.btnUndoChanges.Size = new System.Drawing.Size(126, 23);
+            this.btnUndoChanges.TabIndex = 3;
+            this.btnUndoChanges.Text = "Deshacer renombrado";
+            this.btnUndoChanges.UseVisualStyleBackColor = true;
+            this.btnUndoChanges.Click += new System.EventHandler(this.btnUndoChanges_Click);
             // 
             // RenameFile
             // 
@@ -209,6 +225,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(854, 441);
+            this.Controls.Add(this.btnUndoChanges);
             this.Controls.Add(this.lblCredits);
             this.Controls.Add(this.btnSelectAll);
             this.Controls.Add(this.groupBox4);
@@ -216,6 +233,7 @@
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "RenameFile";
@@ -239,7 +257,7 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.GroupBox groupBox4;
-        private System.Windows.Forms.Button txtCopyPath;
+        private System.Windows.Forms.Button btnCopyPath;
         private System.Windows.Forms.Button btnSelectPath;
         private System.Windows.Forms.TextBox txtPathFolder;
         private System.Windows.Forms.Button btnRename;
@@ -250,6 +268,7 @@
         private System.Windows.Forms.Label lblCredits;
         private System.Windows.Forms.ListBox lbRenamedList;
         private System.Windows.Forms.Label lblDragMessage;
+        private System.Windows.Forms.Button btnUndoChanges;
     }
 }
 

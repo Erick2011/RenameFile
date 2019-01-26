@@ -10,6 +10,8 @@ namespace RenameFile
     {
         #region Attributos
         List<string> checkedItems = new List<string>();
+        List<string> RenamedItems = new List<string>();
+        string shortPath = string.Empty;
         #endregion
 
         #region Constructor
@@ -29,6 +31,7 @@ namespace RenameFile
             lbRenamedList.Items.Clear();
             checkedItems.Clear();
             lblDragMessage.Visible = true;
+            btnUndoChanges.Enabled = false;
             FolderBrowserDialog fbd = new FolderBrowserDialog();
             fbd.Description = "Seleccione la Carpeta";
             fbd.RootFolder = Environment.SpecialFolder.Desktop;
@@ -107,12 +110,24 @@ namespace RenameFile
 
         private void lbRenamedList_DragDrop(object sender, DragEventArgs e)
         {
-            Point point = lbRenamedList.PointToClient(new Point(e.X, e.Y));
-            int index = this.lbRenamedList.IndexFromPoint(point);
-            if (index < 0) index = this.lbRenamedList.Items.Count - 1;
-            object data = e.Data.GetData(typeof(string));
-            this.lbRenamedList.Items.Remove(data);
-            this.lbRenamedList.Items.Insert(index, data);
+            try
+            {
+                Point point = lbRenamedList.PointToClient(new Point(e.X, e.Y));
+                int index = this.lbRenamedList.IndexFromPoint(point);
+                if (index < 0) index = this.lbRenamedList.Items.Count - 1;
+                object data = e.Data.GetData(typeof(string));
+                this.lbRenamedList.Items.Remove(data);
+                this.lbRenamedList.Items.Insert(index, data);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Acción no permitida", 
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Exclamation, 
+                    MessageBoxDefaultButton.Button1);
+            }          
         }
 
         private void clOriginalList_DragEnter(object sender, DragEventArgs e)
@@ -126,12 +141,18 @@ namespace RenameFile
                 bool isFolder = (attr & FileAttributes.Directory) == FileAttributes.Directory;
                 if (!isFolder)
                 {
-                    MessageBox.Show("Archivo no permitido", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1);
+                    MessageBox.Show(
+                        "Archivo no permitido", 
+                        "Error",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Exclamation,
+                        MessageBoxDefaultButton.Button1);
                     return;
                 }
 
                 effects = DragDropEffects.Copy;
                 lblDragMessage.Visible = false;
+                btnUndoChanges.Enabled = true;
                 txtPathFolder.Text = path;
                 FillOriginalList();
             }
@@ -139,11 +160,132 @@ namespace RenameFile
             e.Effect = effects;
         }
 
-        private bool isAllChecked()
+        private bool isChecked()
         {
             bool result = clOriginalList.CheckedItems.Count == clOriginalList.Items.Count ? true : false;
             return result;
         }
+
+        private void txtCopyPath_Click(object sender, EventArgs e)
+        {
+            txtPathFolder.Text = Clipboard.GetText();
+            if (!Directory.Exists(txtPathFolder.Text))
+            {
+                MessageBox.Show(
+                    "Ruta de carpeta no valida", 
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Exclamation,
+                    MessageBoxDefaultButton.Button1);
+
+                txtPathFolder.Text = string.Empty;
+                clOriginalList.Items.Clear();
+                lbRenamedList.Items.Clear();
+                checkedItems.Clear();
+                lblDragMessage.Visible = true;
+                return;
+            }
+            lblDragMessage.Visible = false;
+            FillOriginalList();
+        }
         #endregion
+
+        private void btnRename_Click(object sender, EventArgs e)
+        {
+            RenamedItems.Clear();
+
+            if (txtSerieName.Text.Equals(""))
+            {
+                MessageBox.Show(
+                    "Debe ingresar el nombre de la Serie/Película", 
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Exclamation, 
+                    MessageBoxDefaultButton.Button1);
+            }
+            if(checkedItems.Count == 0)
+            {
+                MessageBox.Show(
+                    "Debe ingresar al menos un archivo a renombrar", 
+                    "Error",
+                    MessageBoxButtons.OK, 
+                    MessageBoxIcon.Exclamation, 
+                    MessageBoxDefaultButton.Button1);
+            }
+            int i = 1;
+            shortPath = txtPathFolder.Text;
+            if (txtSeason.Text.Equals(string.Empty))
+            {
+                foreach (string filename in checkedItems)
+                {
+                    if(i < 10)
+                    {
+                        File.Move($"{txtPathFolder.Text}\\{filename}", $"{txtPathFolder.Text}\\0{i} {txtSerieName.Text}");
+                        RenamedItems.Add($"{txtPathFolder.Text}\\0{i} {txtSerieName.Text}");
+                    }
+                    else
+                    {
+                        File.Move($"{txtPathFolder.Text}\\{filename}", $"{txtPathFolder.Text}\\{i} {txtSerieName.Text}");
+                        RenamedItems.Add($"{txtPathFolder.Text}\\{i} {txtSerieName.Text}");
+                    }
+                    i++;
+                }
+            }
+            else
+            {
+                foreach (string filename in checkedItems)
+                {
+                    if (i < 10)
+                    {
+                        File.Move($"{txtPathFolder.Text}\\{filename}", $"{txtPathFolder.Text}\\{txtSeason.Text}x0{i} {txtSerieName.Text}");
+                        RenamedItems.Add($"{txtPathFolder.Text}\\{txtSeason.Text}x0{i} {txtSerieName.Text}");
+                    }
+                    else
+                    {
+                        File.Move($"{txtPathFolder.Text}\\{filename}", $"{txtPathFolder.Text}\\{txtSeason.Text}x{i} {txtSerieName.Text}");
+                        RenamedItems.Add($"{txtPathFolder.Text}\\{txtSeason.Text}x{i} {txtSerieName.Text}");
+                    }
+                    i++;
+                }
+            }
+            MessageBox.Show("Archivos renombrados exitosamente!!", 
+                "Información", 
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information, 
+                MessageBoxDefaultButton.Button1);
+            ClearControls();
+            btnUndoChanges.Enabled = true;
+        }       
+
+        private void ClearControls()
+        {
+            txtSeason.Text = string.Empty;
+            txtPathFolder.Text = string.Empty;
+            txtSerieName.Text = string.Empty;
+            clOriginalList.Items.Clear();
+            lbRenamedList.Items.Clear();
+            btnSelectAll.Text = "Selecciona Todo";
+        }
+
+        private void btnUndoChanges_Click(object sender, EventArgs e)
+        {
+            UndoChanges();
+        }
+
+        private void UndoChanges()
+        {
+            for (int i = 0; i < checkedItems.Count; i++)
+            {
+                File.Move($"{RenamedItems[i].ToString()}", $"{shortPath}\\{checkedItems[i].ToString()}");
+            }
+            MessageBox.Show(
+                "Cambios deshechos exitosamente!!", 
+                "Información", 
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information, 
+                MessageBoxDefaultButton.Button1);
+
+            btnUndoChanges.Enabled = false;
+        }
     }
 }
