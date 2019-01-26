@@ -202,6 +202,7 @@ namespace RenameFile
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Exclamation, 
                     MessageBoxDefaultButton.Button1);
+                return;
             }
             if(checkedItems.Count == 0)
             {
@@ -211,43 +212,74 @@ namespace RenameFile
                     MessageBoxButtons.OK, 
                     MessageBoxIcon.Exclamation, 
                     MessageBoxDefaultButton.Button1);
+                return;
             }
             int i = 1;
             shortPath = txtPathFolder.Text;
-            if (txtSeason.Text.Equals(string.Empty))
+
+            if (txtSeason.Text.Contains("*"))
             {
+                string beginningExp = txtSeason.Text;
+
+                string[] values = beginningExp.Split('*');
+
+                string season = values[0];
+
+                int capitule = Convert.ToInt32(values[1]);
+
                 foreach (string filename in checkedItems)
                 {
-                    if(i < 10)
+                    if (capitule < 10)
                     {
-                        File.Move($"{txtPathFolder.Text}\\{filename}", $"{txtPathFolder.Text}\\0{i} {txtSerieName.Text}");
-                        RenamedItems.Add($"{txtPathFolder.Text}\\0{i} {txtSerieName.Text}");
+                        File.Move($"{txtPathFolder.Text}\\{filename}", $"{txtPathFolder.Text}\\{season}x0{capitule} {txtSerieName.Text}");
+                        RenamedItems.Add($"{txtPathFolder.Text}\\{season}x0{capitule} {txtSerieName.Text}");
                     }
                     else
                     {
-                        File.Move($"{txtPathFolder.Text}\\{filename}", $"{txtPathFolder.Text}\\{i} {txtSerieName.Text}");
-                        RenamedItems.Add($"{txtPathFolder.Text}\\{i} {txtSerieName.Text}");
+                        File.Move($"{txtPathFolder.Text}\\{filename}", $"{txtPathFolder.Text}\\{season}x{capitule} {txtSerieName.Text}");
+                        RenamedItems.Add($"{txtPathFolder.Text}\\{season}x{capitule} {txtSerieName.Text}");
                     }
-                    i++;
+                    capitule++;
                 }
             }
             else
             {
-                foreach (string filename in checkedItems)
+                if (txtSeason.Text.Equals(string.Empty))
                 {
-                    if (i < 10)
+                    foreach (string filename in checkedItems)
                     {
-                        File.Move($"{txtPathFolder.Text}\\{filename}", $"{txtPathFolder.Text}\\{txtSeason.Text}x0{i} {txtSerieName.Text}");
-                        RenamedItems.Add($"{txtPathFolder.Text}\\{txtSeason.Text}x0{i} {txtSerieName.Text}");
+                        if (i < 10)
+                        {
+                            File.Move($"{txtPathFolder.Text}\\{filename}", $"{txtPathFolder.Text}\\0{i} {txtSerieName.Text}");
+                            RenamedItems.Add($"{txtPathFolder.Text}\\0{i} {txtSerieName.Text}");
+                        }
+                        else
+                        {
+                            File.Move($"{txtPathFolder.Text}\\{filename}", $"{txtPathFolder.Text}\\{i} {txtSerieName.Text}");
+                            RenamedItems.Add($"{txtPathFolder.Text}\\{i} {txtSerieName.Text}");
+                        }
+                        i++;
                     }
-                    else
+                }
+                else
+                {
+                    foreach (string filename in checkedItems)
                     {
-                        File.Move($"{txtPathFolder.Text}\\{filename}", $"{txtPathFolder.Text}\\{txtSeason.Text}x{i} {txtSerieName.Text}");
-                        RenamedItems.Add($"{txtPathFolder.Text}\\{txtSeason.Text}x{i} {txtSerieName.Text}");
+                        if (i < 10)
+                        {
+                            File.Move($"{txtPathFolder.Text}\\{filename}", $"{txtPathFolder.Text}\\{txtSeason.Text}x0{i} {txtSerieName.Text}");
+                            RenamedItems.Add($"{txtPathFolder.Text}\\{txtSeason.Text}x0{i} {txtSerieName.Text}");
+                        }
+                        else
+                        {
+                            File.Move($"{txtPathFolder.Text}\\{filename}", $"{txtPathFolder.Text}\\{txtSeason.Text}x{i} {txtSerieName.Text}");
+                            RenamedItems.Add($"{txtPathFolder.Text}\\{txtSeason.Text}x{i} {txtSerieName.Text}");
+                        }
+                        i++;
                     }
-                    i++;
                 }
             }
+          
             MessageBox.Show("Archivos renombrados exitosamente!!", 
                 "Información", 
                 MessageBoxButtons.OK,

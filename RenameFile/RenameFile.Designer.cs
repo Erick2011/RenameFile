@@ -45,6 +45,7 @@
             this.lblCredits = new System.Windows.Forms.Label();
             this.lblDragMessage = new System.Windows.Forms.Label();
             this.btnUndoChanges = new System.Windows.Forms.Button();
+            this.lblNote = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -101,7 +102,7 @@
             this.groupBox2.Size = new System.Drawing.Size(409, 55);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = " Temporada / Nombre de la Serie";
+            this.groupBox2.Text = "Temporada / Nombre de la Serie";
             // 
             // btnRename
             // 
@@ -115,16 +116,16 @@
             // 
             // txtSerieName
             // 
-            this.txtSerieName.Location = new System.Drawing.Point(75, 17);
+            this.txtSerieName.Location = new System.Drawing.Point(83, 17);
             this.txtSerieName.Name = "txtSerieName";
-            this.txtSerieName.Size = new System.Drawing.Size(247, 20);
+            this.txtSerieName.Size = new System.Drawing.Size(239, 20);
             this.txtSerieName.TabIndex = 1;
             // 
             // txtSeason
             // 
-            this.txtSeason.Location = new System.Drawing.Point(6, 17);
+            this.txtSeason.Location = new System.Drawing.Point(9, 17);
             this.txtSeason.Name = "txtSeason";
-            this.txtSeason.Size = new System.Drawing.Size(63, 20);
+            this.txtSeason.Size = new System.Drawing.Size(68, 20);
             this.txtSeason.TabIndex = 0;
             // 
             // groupBox3
@@ -136,7 +137,7 @@
             this.groupBox3.Size = new System.Drawing.Size(409, 304);
             this.groupBox3.TabIndex = 2;
             this.groupBox3.TabStop = false;
-            this.groupBox3.Text = " Seleccione la Carpeta / Pegar Ruta";
+            this.groupBox3.Text = " Archivos de la Carpeta";
             // 
             // clOriginalList
             // 
@@ -159,7 +160,7 @@
             this.groupBox4.Size = new System.Drawing.Size(409, 304);
             this.groupBox4.TabIndex = 3;
             this.groupBox4.TabStop = false;
-            this.groupBox4.Text = " Seleccione la Carpeta / Pegar Ruta";
+            this.groupBox4.Text = " Archivos a Renombrar";
             // 
             // lbRenamedList
             // 
@@ -215,9 +216,19 @@
             this.btnUndoChanges.Name = "btnUndoChanges";
             this.btnUndoChanges.Size = new System.Drawing.Size(126, 23);
             this.btnUndoChanges.TabIndex = 3;
-            this.btnUndoChanges.Text = "Deshacer renombrado";
+            this.btnUndoChanges.Text = "Deshacer Renombrado";
             this.btnUndoChanges.UseVisualStyleBackColor = true;
             this.btnUndoChanges.Click += new System.EventHandler(this.btnUndoChanges_Click);
+            // 
+            // lblNote
+            // 
+            this.lblNote.AutoSize = true;
+            this.lblNote.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblNote.Location = new System.Drawing.Point(430, 81);
+            this.lblNote.Name = "lblNote";
+            this.lblNote.Size = new System.Drawing.Size(232, 13);
+            this.lblNote.TabIndex = 5;
+            this.lblNote.Text = "Crea correlativos (Temp*Nro Corelativo)";
             // 
             // RenameFile
             // 
@@ -225,6 +236,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(854, 441);
+            this.Controls.Add(this.lblNote);
             this.Controls.Add(this.btnUndoChanges);
             this.Controls.Add(this.lblCredits);
             this.Controls.Add(this.btnSelectAll);
@@ -269,6 +281,7 @@
         private System.Windows.Forms.ListBox lbRenamedList;
         private System.Windows.Forms.Label lblDragMessage;
         private System.Windows.Forms.Button btnUndoChanges;
+        private System.Windows.Forms.Label lblNote;
     }
 }
 
