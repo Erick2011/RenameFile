@@ -16,14 +16,19 @@ namespace RenameFile
         public RenameFile()
         {
             InitializeComponent();
-            this.lbRenamedList.AllowDrop = true;
+            this.AllowDrop = true;
         }
         #endregion
+
 
         #region Methods
         private void btnSelectPath_Click(object sender, EventArgs e)
         {
             txtPathFolder.Text = string.Empty;
+            clOriginalList.Items.Clear();
+            lbRenamedList.Items.Clear();
+            checkedItems.Clear();
+            lblDragMessage.Visible = true;
             FolderBrowserDialog fbd = new FolderBrowserDialog();
             fbd.Description = "Seleccione la Carpeta";
             fbd.RootFolder = Environment.SpecialFolder.Desktop;
@@ -31,6 +36,7 @@ namespace RenameFile
             if (fbd.ShowDialog() == DialogResult.OK)
             {
                 txtPathFolder.Text = fbd.SelectedPath;
+                lblDragMessage.Visible = false;
                 FillOriginalList();
             }
         }
@@ -107,6 +113,36 @@ namespace RenameFile
             object data = e.Data.GetData(typeof(string));
             this.lbRenamedList.Items.Remove(data);
             this.lbRenamedList.Items.Insert(index, data);
+        }
+
+        private void clOriginalList_DragEnter(object sender, DragEventArgs e)
+        {
+            DragDropEffects effects = DragDropEffects.None;
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                var path = ((string[])e.Data.GetData(DataFormats.FileDrop))[0];
+
+                FileAttributes attr = File.GetAttributes(path);
+                bool isFolder = (attr & FileAttributes.Directory) == FileAttributes.Directory;
+                if (!isFolder)
+                {
+                    MessageBox.Show("Archivo no permitido", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1);
+                    return;
+                }
+
+                effects = DragDropEffects.Copy;
+                lblDragMessage.Visible = false;
+                txtPathFolder.Text = path;
+                FillOriginalList();
+            }
+
+            e.Effect = effects;
+        }
+
+        private bool isAllChecked()
+        {
+            bool result = clOriginalList.CheckedItems.Count == clOriginalList.Items.Count ? true : false;
+            return result;
         }
         #endregion
     }

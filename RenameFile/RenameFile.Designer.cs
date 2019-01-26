@@ -29,19 +29,20 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.txtPathFolder = new System.Windows.Forms.TextBox();
-            this.txtSeason = new System.Windows.Forms.TextBox();
-            this.txtSerieName = new System.Windows.Forms.TextBox();
-            this.btnSelectPath = new System.Windows.Forms.Button();
             this.txtCopyPath = new System.Windows.Forms.Button();
+            this.btnSelectPath = new System.Windows.Forms.Button();
+            this.txtPathFolder = new System.Windows.Forms.TextBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.btnRename = new System.Windows.Forms.Button();
+            this.txtSerieName = new System.Windows.Forms.TextBox();
+            this.txtSeason = new System.Windows.Forms.TextBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.clOriginalList = new System.Windows.Forms.CheckedListBox();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.lbRenamedList = new System.Windows.Forms.ListBox();
             this.btnSelectAll = new System.Windows.Forms.Button();
             this.lblCredits = new System.Windows.Forms.Label();
-            this.clOriginalList = new System.Windows.Forms.CheckedListBox();
-            this.lbRenamedList = new System.Windows.Forms.ListBox();
+            this.lblDragMessage = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -60,6 +61,33 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = " Seleccione la Carpeta / Pegar Ruta";
             // 
+            // txtCopyPath
+            // 
+            this.txtCopyPath.Location = new System.Drawing.Point(328, 16);
+            this.txtCopyPath.Name = "txtCopyPath";
+            this.txtCopyPath.Size = new System.Drawing.Size(75, 23);
+            this.txtCopyPath.TabIndex = 2;
+            this.txtCopyPath.Text = "Pegar Ruta";
+            this.txtCopyPath.UseVisualStyleBackColor = true;
+            // 
+            // btnSelectPath
+            // 
+            this.btnSelectPath.Location = new System.Drawing.Point(285, 16);
+            this.btnSelectPath.Name = "btnSelectPath";
+            this.btnSelectPath.Size = new System.Drawing.Size(37, 23);
+            this.btnSelectPath.TabIndex = 1;
+            this.btnSelectPath.Text = "...";
+            this.btnSelectPath.UseVisualStyleBackColor = true;
+            this.btnSelectPath.Click += new System.EventHandler(this.btnSelectPath_Click);
+            // 
+            // txtPathFolder
+            // 
+            this.txtPathFolder.Enabled = false;
+            this.txtPathFolder.Location = new System.Drawing.Point(6, 17);
+            this.txtPathFolder.Name = "txtPathFolder";
+            this.txtPathFolder.Size = new System.Drawing.Size(273, 20);
+            this.txtPathFolder.TabIndex = 0;
+            // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.btnRename);
@@ -72,8 +100,32 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = " Temporada / Nombre de la Serie";
             // 
+            // btnRename
+            // 
+            this.btnRename.Location = new System.Drawing.Point(328, 16);
+            this.btnRename.Name = "btnRename";
+            this.btnRename.Size = new System.Drawing.Size(75, 23);
+            this.btnRename.TabIndex = 2;
+            this.btnRename.Text = "Renombrar";
+            this.btnRename.UseVisualStyleBackColor = true;
+            // 
+            // txtSerieName
+            // 
+            this.txtSerieName.Location = new System.Drawing.Point(75, 17);
+            this.txtSerieName.Name = "txtSerieName";
+            this.txtSerieName.Size = new System.Drawing.Size(247, 20);
+            this.txtSerieName.TabIndex = 1;
+            // 
+            // txtSeason
+            // 
+            this.txtSeason.Location = new System.Drawing.Point(6, 17);
+            this.txtSeason.Name = "txtSeason";
+            this.txtSeason.Size = new System.Drawing.Size(63, 20);
+            this.txtSeason.TabIndex = 0;
+            // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.lblDragMessage);
             this.groupBox3.Controls.Add(this.clOriginalList);
             this.groupBox3.Location = new System.Drawing.Point(12, 100);
             this.groupBox3.Name = "groupBox3";
@@ -81,6 +133,19 @@
             this.groupBox3.TabIndex = 2;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = " Seleccione la Carpeta / Pegar Ruta";
+            // 
+            // clOriginalList
+            // 
+            this.clOriginalList.AllowDrop = true;
+            this.clOriginalList.CheckOnClick = true;
+            this.clOriginalList.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.clOriginalList.FormattingEnabled = true;
+            this.clOriginalList.Location = new System.Drawing.Point(6, 19);
+            this.clOriginalList.Name = "clOriginalList";
+            this.clOriginalList.Size = new System.Drawing.Size(397, 270);
+            this.clOriginalList.TabIndex = 0;
+            this.clOriginalList.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.clOriginalList_ItemCheck);
+            this.clOriginalList.DragEnter += new System.Windows.Forms.DragEventHandler(this.clOriginalList_DragEnter);
             // 
             // groupBox4
             // 
@@ -92,55 +157,19 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = " Seleccione la Carpeta / Pegar Ruta";
             // 
-            // txtPathFolder
+            // lbRenamedList
             // 
-            this.txtPathFolder.Enabled = false;
-            this.txtPathFolder.Location = new System.Drawing.Point(6, 17);
-            this.txtPathFolder.Name = "txtPathFolder";
-            this.txtPathFolder.Size = new System.Drawing.Size(273, 20);
-            this.txtPathFolder.TabIndex = 0;
-            // 
-            // txtSeason
-            // 
-            this.txtSeason.Location = new System.Drawing.Point(6, 17);
-            this.txtSeason.Name = "txtSeason";
-            this.txtSeason.Size = new System.Drawing.Size(63, 20);
-            this.txtSeason.TabIndex = 0;
-            // 
-            // txtSerieName
-            // 
-            this.txtSerieName.Location = new System.Drawing.Point(75, 17);
-            this.txtSerieName.Name = "txtSerieName";
-            this.txtSerieName.Size = new System.Drawing.Size(247, 20);
-            this.txtSerieName.TabIndex = 1;
-            // 
-            // btnSelectPath
-            // 
-            this.btnSelectPath.Location = new System.Drawing.Point(285, 16);
-            this.btnSelectPath.Name = "btnSelectPath";
-            this.btnSelectPath.Size = new System.Drawing.Size(37, 23);
-            this.btnSelectPath.TabIndex = 1;
-            this.btnSelectPath.Text = "...";
-            this.btnSelectPath.UseVisualStyleBackColor = true;
-            this.btnSelectPath.Click += new System.EventHandler(this.btnSelectPath_Click);
-            // 
-            // txtCopyPath
-            // 
-            this.txtCopyPath.Location = new System.Drawing.Point(328, 16);
-            this.txtCopyPath.Name = "txtCopyPath";
-            this.txtCopyPath.Size = new System.Drawing.Size(75, 23);
-            this.txtCopyPath.TabIndex = 2;
-            this.txtCopyPath.Text = "Pegar Ruta";
-            this.txtCopyPath.UseVisualStyleBackColor = true;
-            // 
-            // btnRename
-            // 
-            this.btnRename.Location = new System.Drawing.Point(328, 16);
-            this.btnRename.Name = "btnRename";
-            this.btnRename.Size = new System.Drawing.Size(75, 23);
-            this.btnRename.TabIndex = 2;
-            this.btnRename.Text = "Renombrar";
-            this.btnRename.UseVisualStyleBackColor = true;
+            this.lbRenamedList.AllowDrop = true;
+            this.lbRenamedList.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbRenamedList.FormattingEnabled = true;
+            this.lbRenamedList.ItemHeight = 18;
+            this.lbRenamedList.Location = new System.Drawing.Point(6, 20);
+            this.lbRenamedList.Name = "lbRenamedList";
+            this.lbRenamedList.Size = new System.Drawing.Size(397, 274);
+            this.lbRenamedList.TabIndex = 0;
+            this.lbRenamedList.DragDrop += new System.Windows.Forms.DragEventHandler(this.lbRenamedList_DragDrop);
+            this.lbRenamedList.DragOver += new System.Windows.Forms.DragEventHandler(this.lbRenamedList_DragOver);
+            this.lbRenamedList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lbRenamedList_MouseDown);
             // 
             // btnSelectAll
             // 
@@ -163,32 +192,20 @@
             this.lblCredits.TabIndex = 4;
             this.lblCredits.Text = "Hecho por _Mugiwara_  Solo para @CanalesLocos";
             // 
-            // clOriginalList
+            // lblDragMessage
             // 
-            this.clOriginalList.CheckOnClick = true;
-            this.clOriginalList.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.clOriginalList.FormattingEnabled = true;
-            this.clOriginalList.Location = new System.Drawing.Point(6, 19);
-            this.clOriginalList.Name = "clOriginalList";
-            this.clOriginalList.Size = new System.Drawing.Size(397, 274);
-            this.clOriginalList.TabIndex = 0;
-            this.clOriginalList.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.clOriginalList_ItemCheck);
-            // 
-            // lbRenamedList
-            // 
-            this.lbRenamedList.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbRenamedList.FormattingEnabled = true;
-            this.lbRenamedList.ItemHeight = 18;
-            this.lbRenamedList.Location = new System.Drawing.Point(6, 20);
-            this.lbRenamedList.Name = "lbRenamedList";
-            this.lbRenamedList.Size = new System.Drawing.Size(397, 274);
-            this.lbRenamedList.TabIndex = 0;
-            this.lbRenamedList.DragDrop += new System.Windows.Forms.DragEventHandler(this.lbRenamedList_DragDrop);
-            this.lbRenamedList.DragOver += new System.Windows.Forms.DragEventHandler(this.lbRenamedList_DragOver);
-            this.lbRenamedList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lbRenamedList_MouseDown);
+            this.lblDragMessage.AutoSize = true;
+            this.lblDragMessage.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDragMessage.ForeColor = System.Drawing.SystemColors.ButtonShadow;
+            this.lblDragMessage.Location = new System.Drawing.Point(84, 142);
+            this.lblDragMessage.Name = "lblDragMessage";
+            this.lblDragMessage.Size = new System.Drawing.Size(250, 20);
+            this.lblDragMessage.TabIndex = 1;
+            this.lblDragMessage.Text = "Arrastra la carpeta de tus archivos";
             // 
             // RenameFile
             // 
+            this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(854, 441);
@@ -209,6 +226,7 @@
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -231,6 +249,7 @@
         private System.Windows.Forms.CheckedListBox clOriginalList;
         private System.Windows.Forms.Label lblCredits;
         private System.Windows.Forms.ListBox lbRenamedList;
+        private System.Windows.Forms.Label lblDragMessage;
     }
 }
 
